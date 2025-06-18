@@ -1,0 +1,54 @@
+name: Deploy Lambda to AWS
+
+**Trigger the workflow on push to the main branch**
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      LAMBDA_FUNCTION_NAME: my-lambda-tech-challenge
+
+    steps:
+      # Step 1: Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # Step 3: Install dependencies from package.json
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Lint the codebase to catch syntax and style issues
+      - name: Lint code
+        run: npm run lint
+
+      # Step 5: Run unit tests to validate functionality
+      - name: Run tests
+        run: npm test
+
+      # Step 6: Zip the Lambda function code for deployment
+      - name: Zip Lambda function
+        run: zip -r function.zip .
+
+      # Step 7: Configure AWS credentials using GitHub secrets
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      # Step 8: Deploy the zipped code to the existing Lambda function
+      - name: Deploy to AWS Lambda
+        run: |
+          aws lambda update-fu
