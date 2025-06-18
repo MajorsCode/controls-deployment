@@ -1,0 +1,20 @@
+**Secure Pod Configuration Example**
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: challenge-app
+  labels:
+    app: challenge-app
+spec:
+  containers:
+    - name: app-container
+      image: node:18-alpine
+      command: ["node", "server.js"]
+      securityContext:
+        runAsUser: 1000
+        runAsNonRoot: true
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop: ["ALL"]
