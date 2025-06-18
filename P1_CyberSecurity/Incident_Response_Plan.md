@@ -17,7 +17,7 @@ This document outlines a structured incident response plan (IRP) to handle secur
 - Use Security Hub to correlate and prioritize findings.
 
 3. Contain
-- Use AWS Systems Manager Session Manager to isolate the EC2 instance (e.g., remove it from ELB, detach IAM roles).
+- Use AWS Systems Manager Session Manager to isolate the EC2 instance (remove it from ELB, detach IAM roles, block storage).
 - Apply temporary NACLs or Security Group rules to block outbound traffic.
 - Rotate IAM credentials using Secrets Manager.
 
